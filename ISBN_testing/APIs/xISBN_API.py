@@ -14,14 +14,14 @@ def get_book_detail_using_isbn( input_isbn ):
     except Exception as e:
         append_error_log( "while request + " + first_request_url )
         append_error_log( str(e) )
-        print( str(e) )
-        return False
+        return []
 
     first_respond_json = json.loads( first_respond_data )
     #return first_respond_json
+
     if first_respond_json["stat"] != "ok":
-        print( "Can't find any item!" )
-        return False
+        append_error_log( "while search isbn : " + str(input_isbn) )
+        return []
 
     return first_respond_json["list"]
 
@@ -43,10 +43,10 @@ def get_book_detail( request_bar ):
                 for one_isbn in item["isbn"]:
                     temp_return_item["industryIdentifiers"].append( { "type": "ISBN_13", "identifier": one_isbn } )
             temp_return_item["description"] = item["description"] if "description" in item else ""
+        
         except Exception as e:
             append_error_log( "while fill up temp_return_item " + str(request_bar) )
             append_error_log( str(e) )
-            print( str(e) )
-            return False
+
         return_object["items"].append( temp_return_item )
     return return_object
