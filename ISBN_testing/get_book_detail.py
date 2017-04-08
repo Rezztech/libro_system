@@ -3,7 +3,6 @@ import json
 import settings
 def get_book_detail_using_isbn( input_isbn ):
     first_request_url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + str(input_isbn) + "&key=" + str(settings.API_TOKEN)
-    #print( first_request_url )
     first_request = urllib.request.Request(first_request_url)
     first_respond_data = ""
     try:
@@ -13,9 +12,15 @@ def get_book_detail_using_isbn( input_isbn ):
     except Exception as e:
         print( str(e) )
 
-    #print( first_respond_data )
     first_respond_json = json.loads( first_respond_data )
     #return first_respond_json
+    if first_respond_json["totalItems"] == 0:
+        print( "Can't find any item!" )
+        return False
+    
+    if first_respond_json["totalItems"] != 1:
+        print( "find items more than 1!!!!!!!!!!" )
+
     second_request_url = first_respond_json["items"][0]["selfLink"]
     second_request = urllib.request.Request(second_request_url)
     second_respond_data = ""
