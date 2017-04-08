@@ -14,7 +14,6 @@ def get_book_detail_using_isbn( input_isbn ):
         print( str(e) )
 
     #print( first_respond_data )
-    #return first_respond_data
     first_respond_json = json.loads( first_respond_data )
     #return first_respond_json
     second_request_url = first_respond_json["items"][0]["selfLink"]
