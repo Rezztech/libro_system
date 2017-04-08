@@ -1,3 +1,31 @@
+# request and return object is all like:
+#{
+# TotalItems:1
+# items:[
+#   {
+#   "title": "",
+#   "subtitle": "",
+#   "authors": 
+#   [
+#       ""
+#   ],
+#   "publisher": "",
+#   "publishedDate": "",
+#   "industryIdentifiers": 
+#   [
+#       {
+#           "type": "ISBN_13",
+#           "identifier": "9789862723807"
+#       },
+#       {
+#           "type": "ISBN_10",
+#           "identifier": "9862723807"
+#     }
+#   ],
+#   "description": ""
+#   }
+# ]
+#}
 import sys
 sys.path.append("./APIs")
 import Google_Books_API
