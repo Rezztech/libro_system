@@ -20,5 +20,5 @@ from books import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^add-books/(?P<isbn_list>[0-9,]+)$', views.add_books)
+    url(r'^add-books/$', views.add_books)
 ]
