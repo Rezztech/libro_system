@@ -1,6 +1,7 @@
 *~
 Error_log
 *.swp
+API_settings.py
 
 
 # Byte-compiled / optimized / DLL files
