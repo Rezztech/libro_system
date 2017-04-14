@@ -2,6 +2,7 @@
 Error_log
 *.swp
 API_settings.py
+db.sqlite3
 
 
 # Byte-compiled / optimized / DLL files
