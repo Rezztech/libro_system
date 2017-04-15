@@ -123,5 +123,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "books/static/sb-admin-2"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "assets")
