@@ -5,12 +5,7 @@ GET_BOOK_DETAIL = os.path.join(os.path.dirname(__file__), "get_books_detail")
 sys.path.append(GET_BOOK_DETAIL)
 from get_book_detail import get_book_detail
 
-def ajax_book_detail(request):
-    a = {"c": 0, "b": 100}
-    return JsonResponse(a, safe=False)
-
 def ajax_receive(request):
-    #is_ajax = True if request.is_ajax() else False
     return JsonResponse(request.POST, safe=False)
 
 def isbn_to_detail(request):

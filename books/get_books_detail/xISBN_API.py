@@ -22,7 +22,7 @@ def get_book_detail_using_isbn( input_isbn ):
     #return first_respond_json
 
     if first_respond_json["stat"] != "ok":
-        append_error_log( "while search isbn : " + str(input_isbn) )
+        append_error_log( "xISBN stat [" + first_respond_json["stat"] + "]while search isbn : " + str(input_isbn) )
         return []
 
     return first_respond_json["list"]
