@@ -1,6 +1,8 @@
 from urllib.request import urlopen
 import json
 import datetime
+import re
+import operator
 
 def check_isbn_issn(string):
     if (re.fullmatch(r'[0-9]{9}[0-9X]', string)

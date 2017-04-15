@@ -12,49 +12,36 @@ function isbn_to_book_detail_ajax(){
     $.ajax({
         url: "/add-books-ajax/",
         type: "POST",
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        },
         data: {
-            isbn_input: $("#isbn-input").val(),
+            isbn_input: $("#isbn-input").val().split('\n'),
         },
         error: function() {
             alert("Ajax request error");
         },
         success: function( response ){
+            var isbn_result = $('#isbn-result').DataTable();
             for(var i = 0;i < response["TotalItems"];i++ )
             {
                 E = response["items"][i];
-                var display_item = [];
-                display_item.push("title : ");
-                display_item.push('<input type="text" name="title" value="' + E["title"] + '"> <br>');
-                display_item.push("subtitle : ");
-                display_item.push('<input type="text" name="subtitle" value="' + E["subtitle"] + '"> <br>');
-                display_item.push("authors : ");
-                display_item.push('add');
-                display_item.push('<br>');
-                for (var j in E["authors"]){
-                    display_item.push('<input type="text" name="author" value="' + E["authors"][j] + '">');
-                    display_item.push('<span class="remove-author remove">✗</span> <br>')
+                if (E['no_found']) {
+                    msg += 'book "' + E['title'] + '" not found';
                 }
-                display_item.push("publisher : ");
-                display_item.push('<input type="text" name="publisher" value="' + E["publisher"] + '"> <br>');
-                display_item.push("publisheddate : ");
-                display_item.push('<input type="text" name="publisheddate" value="' + E["publishedDate"] + '"> <br>');
-                display_item.push("identifier : ");
-                display_item.push('add');
-                display_item.push('<br>');
-                for(var j in E["industryIdentifiers"])
-                {
-                    display_item.push(create_isbn_select(E["industryIdentifiers"][j]["type"]))
-                    display_item.push('<input type="text" name="" value="' + E["industryIdentifiers"][j]["identifier"] + '">');
-                    display_item.push('<span class="remove-identifier remove">✗</span> <br>')
+                else {
+                    isbn_result.row.add([
+                        E['title'],
+                        E['subtitle'],
+                        E['authors'].join('<br>'),
+                        E['publisher'],
+                        E['publishedDate'],
+                        E['industryIdentifiers'].map(
+                            p => p['type'] + ': ' + p['identifier']).join('<br>'),
+                        E['description']]);
                 }
-                display_item.push("description : ");
-                display_item.push('<input type="textarea" name="description" value="' + E["description"] + '"> <br>');
-
-                $("<div/>", {
-                "class": "my-new-book-detail",
-                html: display_item.join("")
-                }).appendTo("body");
             }
+            isbn_result.draw();
         }
     });
 }
@@ -71,15 +58,16 @@ function active_remove_click(){
 
 $(document).ready(function(){
     $("#isbn-input").focus();
-    $("#sent-isbn").click(function(){
+    $("#add-books-submit").click(function(e) {
+        e.preventDefault();
         isbn_to_book_detail_ajax();
     });
-    $("#isbn-input").keypress(function(keyin){
-        if(keyin.which == 13){
-            isbn_to_book_detail_ajax();
-            return false;
-        }
-    });
+    // $("#isbn-input").keypress(function(keyin){
+    //     if(keyin.which == 13){
+    //         isbn_to_book_detail_ajax();
+    //         return false;
+    //     }
+    // });
     /* fail
     $(document).on("click", ".remove-author", function(){
         active_remove_click();

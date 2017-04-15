@@ -3,13 +3,6 @@ from books import utils
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from urllib.request import urlopen
-import datetime
-import json
-import operator
-import re
-
-
 def isbn_issn_validator(string):
     if not utils.check_isbn_issn(string):
         raise ValidationError()

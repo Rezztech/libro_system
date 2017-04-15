@@ -15,12 +15,12 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            <form role="form">
+                            <form role="form" id="add-books-form">
                                 <div class="form-group">
                                     <label>Enter ISBN: (one book per line)</label>
-                                    <textarea class="form-control" rows="10" name="isbn_list"></textarea>
+                                    <textarea class="form-control" rows="10" id="isbn-input"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-default">Submit</button>
+                                <button type="submit" id="add-books-submit" class="btn btn-default">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
-            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+            <table width="100%" class="table table-striped table-bordered table-hover" id="isbn-result">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -68,5 +68,3 @@
     </div>
 </div>
 <!-- /#page-wrapper -->
-
-<script src="{% static 'ajax_add_books.js' %}"></script>

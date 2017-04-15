@@ -1,17 +1,9 @@
 from books import models
 
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import render
 from django.http import HttpResponse
 
-'''
-def add_books(request):
-	models.BookDetails.add_books(request.POST.get('books'))
-	return HttpResponse('add books')
-'''
-
-
-def add_books(request):
-    return render(request, "pages/add-books.html", locals())
-
+@ensure_csrf_cookie
 def index(request):
 	return render(request, "index.html")
