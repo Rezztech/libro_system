@@ -20,11 +20,14 @@
     </script>
 </head>
 <body>
+    <h2>You can add book detail that search from Internet using ISBN/ISSN</h2>
     <input type="text" name="isbn-input" id="isbn-input">
     <input type="button" value="Sent ISBN" id="sent-isbn">
-
+    <h4>quick add books option</h4>
+    <input type="checkbox" id="auto-add-first">Auto using the first result from Internet<br>
     <span id="isbn-input-message"></span>
-    <div class="add-new-book-detail">
+    <h2>...or you can just type the detail yourself</h2>
+    <div class="add-new-book-detail book-detail-block">
         <label for="title">title : </label>
         <input type="text" name="title" id="title" value=""> <br>
         <label for="subtitle">subtitle : </label>
@@ -60,6 +63,7 @@
         </ul>
         <label for="description">description : </label> 
         <input type="textarea" name="description" id="description" value=""> <br>
+        <button id="submit-book-to-store">Submit</button>
     </div>
 </body>
 </html>

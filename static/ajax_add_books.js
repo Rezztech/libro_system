@@ -1,3 +1,5 @@
+var TEST
+var A_clear_book_detail_block //A jquery object
 function create_isbn_select(Identifier_type){
     var isbn_select = "";
     isbn_select += '<select name="identifier">\n';
@@ -22,6 +24,12 @@ function isbn_to_book_detail_ajax(){
             for(var i = 0;i < response["TotalItems"];i++ )
             {
                 E = response["items"][i];
+                /*
+                display_item = A_clear_book_detail_block;
+                display_item.find("#title").val(E["title"]);
+                display_item.find("#subtitle").val(E["subtitle"]);
+                display_item.appendTo("body");
+                */
                 var display_item = [];
                 display_item.push("title : ");
                 display_item.push('<input type="text" name="title" value="' + E["title"] + '"> <br>');
@@ -59,17 +67,8 @@ function isbn_to_book_detail_ajax(){
     });
 }
 
-/*
-function active_remove_click(){
-    $(".remove-author").click(function(){
-        console.log("YOOOOOOOOOOOOOOOOOOOOO");
-        $("this").remove();
-    });
-
-}
-*/
-
 $(document).ready(function(){
+    A_clear_book_detail_block = $(".book-detail-block").clone();
     $("#isbn-input").focus();
     $("#sent-isbn").click(function(){
         isbn_to_book_detail_ajax();
@@ -80,12 +79,29 @@ $(document).ready(function(){
             return false;
         }
     });
-    /* fail
-    $(document).on("click", ".remove-author", function(){
-        active_remove_click();
-        console.log("BYOOOOOOOOOOOOOOOOOOOOO");
-        //$(this)
-    })
-    */
+    $(document).on("click","#add-new-authors",function(event){
+        event.preventDefault();
+        var new_author_item = $(".author-item:first").clone();
+        new_author_item.find(":input").val("");
+        $(this).parent().find(".authors-container").append(new_author_item);
+    });
+    $(document).on("click","#add-new-identifier",function(event){
+        event.preventDefault();
+        var new_identifier_item = $(".identifier-item:first").clone();
+        new_identifier_item.find(":input").val("");
+        $(this).parent().find(".identifier-container").append(new_identifier_item);
+    });
+    $(document).on("click", ".remove-author", function(event){
+        event.preventDefault();
+        if($(this.parentElement.parentElement).find(".author-item").length != 1){
+            $(this).closest($(this)).parent().remove();
+        }
+    });
+    $(document).on("click", ".remove-identifier", function(event){
+        event.preventDefault();
+        if($(this.parentElement.parentElement).find(".identifier-item").length != 1){
+            $(this).closest($(this)).parent().remove();
+        }
+    });
 });
 
