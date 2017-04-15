@@ -1,4 +1,3 @@
-var TEST
 var A_clear_book_detail_block //A jquery object
 function create_isbn_select(Identifier_type){
     var isbn_select = "";
@@ -24,44 +23,39 @@ function isbn_to_book_detail_ajax(){
             for(var i = 0;i < response["TotalItems"];i++ )
             {
                 E = response["items"][i];
-                /*
-                display_item = A_clear_book_detail_block;
+                var display_item = A_clear_book_detail_block.clone();
                 display_item.find("#title").val(E["title"]);
                 display_item.find("#subtitle").val(E["subtitle"]);
+                display_item.find("#publisher").val(E["publisher"]);
+                display_item.find("#publisheddate").val(E["publisheddate"]);
+                display_item.find("#description").val(E["description"]);
+                A_clear_author_item = A_clear_book_detail_block.find(".author-item").clone();
+                for(var j in E["authors"]){
+                    if(j == 0){
+                        display_item.find(".author-item").find(":input").val(E["authors"][j])
+                    }
+                    else{
+                        new_author_item = A_clear_author_item.clone();
+                        new_author_item.find(":input").val(E["authors"][j]);
+                        new_author_item.appendTo(display_item.find(".authors-container"));
+                    }
+                }
+                A_clear_identifier_item = A_clear_book_detail_block.find(".identifier-item").clone();
+                for(var j in E["industryIdentifiers"]){
+                    if(j == 0){
+                        //display_item.find(".identifier-item").find("select").val([E["industryIdentifiers"][j]["type"]]);
+                        display_item.find(".identifier-item").find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
+                        display_item.find(".identifier-item").find(":input").val(E["industryIdentifiers"][j]["identifier"]);
+                    }
+                    else{
+                        new_identifier_item = A_clear_identifier_item.clone();
+                        //new_identifier_item.find("select").val(E["industryIdentifiers"][j]["type"]);
+                        new_identifier_item.find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
+                        new_identifier_item.find(":input").val(E["industryIdentifiers"][j]["identifier"]);
+                        new_identifier_item.appendTo(display_item.find(".identifier-container"));
+                    }
+                }
                 display_item.appendTo("body");
-                */
-                var display_item = [];
-                display_item.push("title : ");
-                display_item.push('<input type="text" name="title" value="' + E["title"] + '"> <br>');
-                display_item.push("subtitle : ");
-                display_item.push('<input type="text" name="subtitle" value="' + E["subtitle"] + '"> <br>');
-                display_item.push("authors : ");
-                display_item.push('add');
-                display_item.push('<br>');
-                for (var j in E["authors"]){
-                    display_item.push('<input type="text" name="author" value="' + E["authors"][j] + '">');
-                    display_item.push('<span class="remove-author remove">✗</span> <br>')
-                }
-                display_item.push("publisher : ");
-                display_item.push('<input type="text" name="publisher" value="' + E["publisher"] + '"> <br>');
-                display_item.push("publisheddate : ");
-                display_item.push('<input type="text" name="publisheddate" value="' + E["publishedDate"] + '"> <br>');
-                display_item.push("identifier : ");
-                display_item.push('add');
-                display_item.push('<br>');
-                for(var j in E["industryIdentifiers"])
-                {
-                    display_item.push(create_isbn_select(E["industryIdentifiers"][j]["type"]))
-                    display_item.push('<input type="text" name="" value="' + E["industryIdentifiers"][j]["identifier"] + '">');
-                    display_item.push('<span class="remove-identifier remove">✗</span> <br>')
-                }
-                display_item.push("description : ");
-                display_item.push('<input type="textarea" name="description" value="' + E["description"] + '"> <br>');
-
-                $("<div/>", {
-                "class": "my-new-book-detail",
-                html: display_item.join("")
-                }).appendTo("body");
             }
         }
     });
