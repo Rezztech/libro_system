@@ -11,4 +11,7 @@ def add_books(request):
 
 
 def add_books(request):
-    return render(request, "add_books.html", locals())
+    return render(request, "pages/add-books.html", locals())
+
+def index(request):
+	return render(request, "index.html")
