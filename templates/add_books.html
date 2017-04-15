@@ -24,7 +24,42 @@
     <input type="button" value="Sent ISBN" id="sent-isbn">
 
     <span id="isbn-input-message"></span>
-    <p id="ajax_response"> response </p>
-
+    <div class="add-new-book-detail">
+        <label for="title">title : </label>
+        <input type="text" name="title" id="title" value=""> <br>
+        <label for="subtitle">subtitle : </label>
+        <input type="text" name="subtitle" id="subtitle" value=""> <br>
+        <label for="authors">authors : </label>
+        <button id="add-new-authors">+ Add</button> <br>
+        <ul class="authors-container">
+        <!-- loop -->
+          <li class="author-item">
+              <input type="text" name="author" value="">
+              <span class="remove-author remove">✗</span>
+          </li>
+          <!-- loop end -->
+        </ul>
+        <label for="publisher">publisher : </label>
+        <input type="text" name="publisher" id="publisher" value=""> <br>
+        <label for="publisheddate">publisheddate : </label>
+        <input type="text" name="publisheddate" id="publisheddate" value=""> <br>
+        <label for="identifier">identifier : </label> 
+        <button id="add-new-identifier">+ Add</button> <br>
+        <ul class="identifier-container">
+        <!-- loop -->
+          <li class="identifier-item">
+            <select name="identifier">
+                <option value="ISBN_13">ISBN_13</option>
+                <option value="ISBN_10">ISBN_10</option>
+                <option value="ISSN">ISSN</option>
+            </select>
+            <input type="text" name="" value="">
+            <span class="remove-identifier remove">✗</span>
+          </li>
+          <!-- loop end -->
+        </ul>
+        <label for="description">description : </label> 
+        <input type="textarea" name="description" id="description" value=""> <br>
+    </div>
 </body>
 </html>
