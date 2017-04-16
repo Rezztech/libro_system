@@ -44,18 +44,24 @@ function isbn_to_book_detail_ajax(){
                 for(var j in E["industryIdentifiers"]){
                     if(j == 0){
                         //display_item.find(".identifier-item").find("select").val([E["industryIdentifiers"][j]["type"]]);
-                        display_item.find(".identifier-item").find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
+                        //display_item.find(".identifier-item").find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
                         display_item.find(".identifier-item").find(":input").val(E["industryIdentifiers"][j]["identifier"]);
                     }
                     else{
                         new_identifier_item = A_clear_identifier_item.clone();
                         //new_identifier_item.find("select").val(E["industryIdentifiers"][j]["type"]);
-                        new_identifier_item.find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
+                        //new_identifier_item.find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
+                        //failing so I move select after appendTo
                         new_identifier_item.find(":input").val(E["industryIdentifiers"][j]["identifier"]);
                         new_identifier_item.appendTo(display_item.find(".identifier-container"));
                     }
                 }
                 display_item.appendTo("body");
+                
+                //fill up select
+                for(var j in E["industryIdentifiers"]){
+                    $(".book-detail-block:last").find(".identifier-container").find("select").eq(j).val(E["industryIdentifiers"][j]["type"]);
+                }
             }
         }
     });
