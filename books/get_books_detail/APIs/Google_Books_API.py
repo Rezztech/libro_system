@@ -13,7 +13,7 @@ def get_book_detail_using_isbn( input_isbn ):
         first_respond_data = str(first_respond.read().decode('utf-8'))
         
     except Exception as e:
-        append_error_log( "while request + " + first_request_url )
+        append_error_log( "Google API error while request + " + first_request_url )
         append_error_log( str(e) )
         print( str(e) )
         return False
