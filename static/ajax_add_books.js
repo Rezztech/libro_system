@@ -1,15 +1,6 @@
 var A_clear_book_detail_block //A jquery object
-function create_isbn_select(Identifier_type){
-    var isbn_select = "";
-    isbn_select += '<select name="identifier">\n';
-    isbn_select += '<option value="ISBN_13" ' + (Identifier_type == "ISBN_13" ? 'selected' : "") + '>ISBN_13</option>\n';
-    isbn_select += '<option value="ISBN_10" ' + (Identifier_type == "ISBN_10" ? 'selected' : "") + '>ISBN_10</option>\n';
-    isbn_select += '<option value="ISSN" ' + (Identifier_type == "ISSN" ? 'selected' : "") + '>ISSN</option>\n';
-    isbn_select += '</select>';
-    return isbn_select
-}
 function isbn_to_book_detail_ajax(){
-    $(".my-new-book-detail").remove();
+    $(".book-detail-block").remove();
     $.ajax({
         url: "/add-books-ajax/",
         type: "POST",
@@ -18,6 +9,8 @@ function isbn_to_book_detail_ajax(){
         },
         error: function() {
             alert("Ajax request error");
+            var display_item = A_clear_book_detail_block.clone();
+            display_item.appendTo("body");
         },
         success: function( response ){
             for(var i = 0;i < response["TotalItems"];i++ )
@@ -43,15 +36,11 @@ function isbn_to_book_detail_ajax(){
                 A_clear_identifier_item = A_clear_book_detail_block.find(".identifier-item").clone();
                 for(var j in E["industryIdentifiers"]){
                     if(j == 0){
-                        //display_item.find(".identifier-item").find("select").val([E["industryIdentifiers"][j]["type"]]);
-                        //display_item.find(".identifier-item").find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
                         display_item.find(".identifier-item").find(":input").val(E["industryIdentifiers"][j]["identifier"]);
                     }
                     else{
                         new_identifier_item = A_clear_identifier_item.clone();
-                        //new_identifier_item.find("select").val(E["industryIdentifiers"][j]["type"]);
-                        //new_identifier_item.find('option[value="' + E["industryIdentifiers"][j]["type"] + '"]').prop('slected', true);
-                        //failing so I move select after appendTo
+                        //failing. so I move select after appendTo
                         new_identifier_item.find(":input").val(E["industryIdentifiers"][j]["identifier"]);
                         new_identifier_item.appendTo(display_item.find(".identifier-container"));
                     }
@@ -62,6 +51,10 @@ function isbn_to_book_detail_ajax(){
                 for(var j in E["industryIdentifiers"]){
                     $(".book-detail-block:last").find(".identifier-container").find("select").eq(j).val(E["industryIdentifiers"][j]["type"]);
                 }
+            }
+            if(response["TotalItems"] == 0){
+                var display_item = A_clear_book_detail_block.clone();
+                display_item.appendTo("body");
             }
         }
     });
