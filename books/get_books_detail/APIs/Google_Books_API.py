@@ -5,7 +5,11 @@ from write_error_log import append_error_log
 import json
 import API_settings
 def get_book_detail_using_isbn( input_isbn ):
-    first_request_url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + str(input_isbn) + "&key=" + str(API_settings.GOOGLE_BOOKS_API_TOKEN)
+    first_request_url = ""
+    if API_settings.GOOGLE_BOOKS_API_TOKEN == "":
+        first_request_url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + str(input_isbn) 
+    else:
+        first_request_url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + str(input_isbn) + "&key=" + str(API_settings.GOOGLE_BOOKS_API_TOKEN)
     first_request = urllib.request.Request(first_request_url)
     first_respond_data = ""
     try:
