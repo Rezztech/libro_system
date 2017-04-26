@@ -1,4 +1,9 @@
+//TODO post use $.serialize()
 var A_clear_book_detail_block //A jquery object
+var TEST
+function display_status_message(message){
+    $("#status-message").text(message);
+}
 function isbn_to_book_detail_ajax(){
     $(".book-detail-block").remove();
     $.ajax({
@@ -13,6 +18,9 @@ function isbn_to_book_detail_ajax(){
             display_item.appendTo("body");
         },
         success: function( response ){
+            if(response["status"] == "invalid_identifier"){
+                display_status_message("invalid_identifier")
+            }
             for(var i = 0;i < response["TotalItems"];i++ )
             {
                 E = response["items"][i];
@@ -95,6 +103,31 @@ $(document).ready(function(){
         if($(this.parentElement.parentElement).find(".identifier-item").length != 1){
             $(this).closest($(this)).parent().remove();
         }
+    });
+    $(document).on("click", "#submit-book-to-store", function(event){
+        event.preventDefault();
+        return_object = []
+        parent_div = $(this.parentElement)
+        return_object.push($(this.parentElement).find("#title").serialize())
+        return_object.push($(this.parentElement).find("#subtitle").serialize())
+        return_object.push($(this.parentElement).find("#publisher").serialize())
+        return_object.push($(this.parentElement).find("#publisheddate").serialize())
+        return_object.push($(this.parentElement).find("#description").serialize())
+        authors = []
+        for( var i = 0; i < parent_div.find(".authors-container").find("input").length; i++){
+            authors.push(parent_div.find(".authors-container").find("input").eq(i).serialize())
+        }
+        return_object.push(authors)
+        identifiers = []
+        for( var i = 0; i < parent_div.find(".identifier-container").find("li").length; i++){
+            identifier_temp = []
+            identifier_temp.push(parent_div.find(".identifier-container").find("select").eq(i).serialize())
+            identifier_temp.push(parent_div.find(".identifier-container").find("input").eq(i).serialize())
+            identifiers.push(identifier_temp)
+        }
+        return_object.push(identifiers)
+
+        TEST = return_object
     });
 });
 

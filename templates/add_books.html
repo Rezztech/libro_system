@@ -25,7 +25,7 @@
     <input type="button" value="Sent ISBN" id="sent-isbn">
     <h4>quick add books option</h4>
     <input type="checkbox" id="auto-add-first">Auto using the first result from Internet<br>
-    <span id="isbn-input-message"></span>
+    <span id="status-message"></span>
     <h2>...or you can just type the detail yourself</h2>
     <div class="book-detail-block">
         <label for="title">title : </label>
@@ -51,12 +51,12 @@
         <ul class="identifier-container">
         <!-- loop -->
           <li class="identifier-item">
-            <select name="identifier" class="identifier-select">
+            <select name="identifier-select" class="identifier-select">
                 <option value="ISBN_13">ISBN_13</option>
                 <option value="ISBN_10">ISBN_10</option>
                 <option value="ISSN">ISSN</option>
             </select>
-            <input type="text" name="" value="">
+            <input type="text" name="identifier-value" class="identifier-value" value="">
             <span class="remove-identifier remove">✗</span>
           </li>
           <!-- loop end -->
