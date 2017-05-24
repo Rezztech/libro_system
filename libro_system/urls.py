@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^add-books/$', views.add_books),
     url(r'^add-books-ajax/$', add_books_ajax_views.isbn_to_detail),
-    url(r'^response-receive-ajax/$', add_books_ajax_views.response_receive_ajax)
+    url(r'^response-receive-ajax/$', add_books_ajax_views.response_receive_ajax),
+    url(r'^detail-to-store/$', add_books_ajax_views.detail_to_store)
 ]

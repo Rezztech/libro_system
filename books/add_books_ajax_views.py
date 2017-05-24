@@ -22,3 +22,23 @@ def isbn_to_detail(request):
             response_object["status"] = "invalid_identifier"
             return JsonResponse(response_object, safe=False)
 
+def detail_to_store(request):
+    if request.is_ajax():
+        book_detail = {}
+        book_detail["title"] = request.POST["title"]
+        book_detail["subtitle"] = request.POST["subtitle"]
+        book_detail["publisher"] = request.POST["publisher"]
+        book_detail["publisheddate"] = request.POST["publisheddate"]
+        book_detail["description"] = request.POST["description"]
+        book_detail["authors"] = request.POST.getlist("authors[]")
+
+        identifiers_not_split = request.POST.getlist("identifiers[]")
+        identifiers_splited = []
+        for identifier in identifiers_not_split:
+            identifiers_splited.append({
+                "type" : identifier.split(":")[0],
+                "identifier" : identifier.split(":")[1]
+                })
+        book_detail["identifiers"] = identifiers_splited
+            
+        return JsonResponse(book_detail, safe=False)
