@@ -6,7 +6,7 @@ sys.path.append(GET_BOOK_DETAIL)
 from get_book_detail import get_book_detail
 from .utils import check_isbn_issn
 
-def ajax_receive(request):
+def response_receive_ajax(request):
     return JsonResponse(request.POST, safe=False)
 
 def isbn_to_detail(request):

@@ -4,6 +4,60 @@ var TEST
 function display_status_message(message){
     $("#status-message").text(message);
 }
+function submit_book_detail_to_store_ajax(submit_div){
+        //TEST = submit_div
+        /*/test begin
+        return_object = []
+        return_object.push($(submit_div).find("#title").serialize())
+        return_object.push($(submit_div).find("#subtitle").serialize())
+        return_object.push($(submit_div).find("#publisher").serialize())
+        return_object.push($(submit_div).find("#publisheddate").serialize())
+        return_object.push($(submit_div).find("#description").serialize())
+        authors = []
+        for( var i = 0; i < submit_div.find(".authors-container").find("input").length; i++){
+            authors.push(submit_div.find(".authors-container").find("input").eq(i).serialize())
+        }
+        return_object.push(authors)
+        identifiers = []
+        for( var i = 0; i < submit_div.find(".identifier-container").find("li").length; i++){
+            identifier_temp = []
+            identifier_temp.push(submit_div.find(".identifier-container").find("select").eq(i).serialize())
+            identifier_temp.push(submit_div.find(".identifier-container").find("input").eq(i).serialize())
+            identifiers.push(identifier_temp)
+        }
+        return_object.push(identifiers)
+        //TEST = return_object;
+        //test end/*/
+        authors = [];
+        for( var i = 0; i < submit_div.find(".authors-container").find("input").length; i++){
+            authors.push(submit_div.find(".authors-container").find("input").eq(i).val())
+        }
+        
+        identifiers = [];
+        for( var i = 0; i < submit_div.find(".identifier-container").find("li").length; i++){
+            identifier_temp = submit_div.find(".identifier-container").find("select").eq(i).val() + ":" + submit_div.find(".identifier-container").find("input").eq(i).val();
+            identifiers.push(identifier_temp)
+        }
+        $.ajax({
+            url: "/response-receive-ajax/",
+            type: "POST",
+            data: {
+                title : $(submit_div).find("#title").val(),
+                subtitle : $(submit_div).find("#subtitle").val(),
+                publisher : $(submit_div).find("#publisher").val(),
+                publisheddate : $(submit_div).find("#publisheddate").val(),
+                description : $(submit_div).find("#description").val(),
+                authors : authors,
+                identifiers : identifiers,
+            },
+            error: function(){
+                alert("Ajax request error");
+            },
+            success: function( response ){
+                TEST = response;
+            },
+        });
+}
 function isbn_to_book_detail_ajax(){
     $(".book-detail-block").remove();
     $.ajax({
@@ -19,7 +73,7 @@ function isbn_to_book_detail_ajax(){
         },
         success: function( response ){
             if(response["status"] == "invalid_identifier"){
-                display_status_message("invalid_identifier")
+                display_status_message("invalid identifier")
             }
             for(var i = 0;i < response["TotalItems"];i++ )
             {
@@ -106,28 +160,7 @@ $(document).ready(function(){
     });
     $(document).on("click", "#submit-book-to-store", function(event){
         event.preventDefault();
-        return_object = []
-        parent_div = $(this.parentElement)
-        return_object.push($(this.parentElement).find("#title").serialize())
-        return_object.push($(this.parentElement).find("#subtitle").serialize())
-        return_object.push($(this.parentElement).find("#publisher").serialize())
-        return_object.push($(this.parentElement).find("#publisheddate").serialize())
-        return_object.push($(this.parentElement).find("#description").serialize())
-        authors = []
-        for( var i = 0; i < parent_div.find(".authors-container").find("input").length; i++){
-            authors.push(parent_div.find(".authors-container").find("input").eq(i).serialize())
-        }
-        return_object.push(authors)
-        identifiers = []
-        for( var i = 0; i < parent_div.find(".identifier-container").find("li").length; i++){
-            identifier_temp = []
-            identifier_temp.push(parent_div.find(".identifier-container").find("select").eq(i).serialize())
-            identifier_temp.push(parent_div.find(".identifier-container").find("input").eq(i).serialize())
-            identifiers.push(identifier_temp)
-        }
-        return_object.push(identifiers)
-
-        TEST = return_object
+        submit_book_detail_to_store_ajax($(this.parentElement))
     });
 });
 
