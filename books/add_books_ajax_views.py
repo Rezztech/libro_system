@@ -49,7 +49,7 @@ def detail_to_store(request):
         response_object["status"] = "success"
         response_object["invalid_identifier_content"] = []
         if book_detail["title"] == "":
-            response_object["status"] = "title_blank"
+            response_object["status"] = "title_empty"
         for identifier in book_detail["identifiers"]:
             if not check_isbn_issn( identifier["identifier"] ):
                 response_object["status"] = "invalid_identifier"
