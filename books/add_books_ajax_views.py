@@ -27,14 +27,14 @@ def isbn_to_detail(request):
 def detail_to_store(request):
     if request.is_ajax():
         book_detail = {}
-        book_detail["title"] = request.POST["title"]
-        book_detail["subtitle"] = request.POST["subtitle"]
-        book_detail["publisher"] = request.POST["publisher"]
-        book_detail["publisheddate"] = request.POST["publisheddate"]
-        book_detail["description"] = request.POST["description"]
-        book_detail["authors"] = request.POST.getlist("authors[]")
+        book_detail["title"] = request.POST["detail_title"]
+        book_detail["subtitle"] = request.POST["detail_subtitle"]
+        book_detail["publisher"] = request.POST["detail_publisher"]
+        book_detail["publisheddate"] = request.POST["detail_publisheddate"]
+        book_detail["description"] = request.POST["detail_description"]
+        book_detail["authors"] = request.POST.getlist("detail_authors[]")
 
-        identifiers_not_split = request.POST.getlist("identifiers[]")
+        identifiers_not_split = request.POST.getlist("detail_identifiers[]")
         identifiers_splited = []
         for identifier in identifiers_not_split:
             identifiers_splited.append({
@@ -43,7 +43,7 @@ def detail_to_store(request):
                 })
         book_detail["identifiers"] = identifiers_splited
 
-        #return JsonResponse(book_detail, safe=False)
+        return JsonResponse(book_detail, safe=False)
 
         response_object = {}
         response_object["status"] = "success"

@@ -1,32 +1,85 @@
-//TODO post use $.serialize()
+//create_post_data's parameter
+//parameter = {
+//pessessor_information : true/false
+//isbn : true/false
+//option : true/false
+//detail : true/false
+//detail_submit_target : (A jquery object)
+//}
 var A_clear_book_detail_block //A jquery object
 var TEST
-function display_status_message(message){
-    $("#status-message").text(message);
-}
-function submit_book_detail_to_store_ajax(submit_div){
+function create_post_data(parameter){
+    var response_object = {};
+    if(parameter["pessessor_information"]){
+    }
+    if(parameter["isbn"]){
+        response_object = Object.assign(response_object,{
+            isbn_input: $("#isbn-input").val(),
+        })
+    }
+    if(parameter["option"]){
+        //response_object = Object.assign(response_object,{
+        //})
+    }
+    if(parameter["detail"]){ 
+        submit_div = parameter["detail_submit_target"];
+
         authors = [];
         for( var i = 0; i < submit_div.find(".authors-container").find("input").length; i++){
             authors.push(submit_div.find(".authors-container").find("input").eq(i).val())
         }
-        
         identifiers = [];
         for( var i = 0; i < submit_div.find(".identifier-container").find("li").length; i++){
             identifier_temp = submit_div.find(".identifier-container").find("select").eq(i).val() + ":" + submit_div.find(".identifier-container").find("input").eq(i).val();
             identifiers.push(identifier_temp)
         }
+
+        response_object = Object.assign(response_object,{
+            detail_title : $(submit_div).find("#title").val(),
+            detail_subtitle : $(submit_div).find("#subtitle").val(),
+            detail_publisher : $(submit_div).find("#publisher").val(),
+            detail_publisheddate : $(submit_div).find("#publisheddate").val(),
+            detail_description : $(submit_div).find("#description").val(),
+            detail_authors : authors,
+            detail_identifiers : identifiers,
+        })
+    }
+    return response_object;
+}
+function display_status_message(message){
+    $("#status-message").text(message);
+}
+function submit_book_detail_to_store_ajax(submit_div){
+        //authors = [];
+        //for( var i = 0; i < submit_div.find(".authors-container").find("input").length; i++){
+        //    authors.push(submit_div.find(".authors-container").find("input").eq(i).val())
+        //}
+        //
+        //identifiers = [];
+        //for( var i = 0; i < submit_div.find(".identifier-container").find("li").length; i++){
+        //    identifier_temp = submit_div.find(".identifier-container").find("select").eq(i).val() + ":" + submit_div.find(".identifier-container").find("input").eq(i).val();
+        //    identifiers.push(identifier_temp)
+        //}
+        request_post_data_parameter = {
+            pessessor_information : false,
+            isbn : false,
+            option : false,
+            detail : true,
+            detail_submit_target : submit_div,
+        }
         $.ajax({
             url: "/detail-to-store/",
             type: "POST",
-            data: {
-                title : $(submit_div).find("#title").val(),
-                subtitle : $(submit_div).find("#subtitle").val(),
-                publisher : $(submit_div).find("#publisher").val(),
-                publisheddate : $(submit_div).find("#publisheddate").val(),
-                description : $(submit_div).find("#description").val(),
-                authors : authors,
-                identifiers : identifiers,
-            },
+            data: create_post_data(request_post_data_parameter),
+            //data: {
+            //    title : $(submit_div).find("#title").val(),
+            //    subtitle : $(submit_div).find("#subtitle").val(),
+            //    publisher : $(submit_div).find("#publisher").val(),
+            //    publisheddate : $(submit_div).find("#publisheddate").val(),
+            //    description : $(submit_div).find("#description").val(),
+            //    authors : authors,
+            //    identifiers : identifiers,
+            //},
             error: function(){
                 alert("Ajax request error");
             },
