@@ -20,13 +20,24 @@
     </script>
 </head>
 <body>
-    <h2>You can add book detail that search from Internet using ISBN/ISSN</h2>
+    <h2>¿De donde son estos libros?</h2>
+    <label for="location">location : </label>
+    <input type="text" name="location" id="location" value=""> <br>
+    <label for="possessor">possessor : </label>
+    <input type="text" name="possessor" id="possessor" value=""> <br>
+    <label for="Notas">Notas : </label>
+    <input type="textarea" name="Notas" id="Notas" value=""> <br>
+
+    <h2>quick add books option</h2>
+    <input type="checkbox" id="auto-add-first">Auto using the first result from Internet<br>
+
+    <span id="status-message"></span>
+
+    <h2>Book detail</h2>        
+    <h3>You can add book detail that search from Internet using ISBN/ISSN</h3>
     <input type="text" name="isbn-input" id="isbn-input">
     <input type="button" value="Sent ISBN" id="sent-isbn">
-    <h4>quick add books option</h4>
-    <input type="checkbox" id="auto-add-first">Auto using the first result from Internet<br>
-    <span id="status-message"></span>
-    <h2>...or you can just type the detail yourself</h2>
+    <h3>...or you can just type the detail yourself</h3>
     <div class="book-detail-block">
         <label for="title">title : </label>
         <input type="text" name="title" id="title" value=""> <br>
