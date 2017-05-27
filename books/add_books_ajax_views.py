@@ -45,6 +45,8 @@ def detail_to_store(request):
 
         #return JsonResponse(book_detail, safe=False)
 
+        substance_information = {}
+
         substance_information["location"] = request.POST["information_location"]
         substance_information["possessor"] = request.POST["information_possessor"]
         substance_information["notas"] = request.POST["information_notas"]
