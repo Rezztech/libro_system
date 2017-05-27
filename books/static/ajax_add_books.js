@@ -7,7 +7,7 @@
 //detail_submit_target : (A jquery object)
 //}
 var A_clear_book_detail_block //A jquery object
-var TEST = "initied"
+var TEST = "initial"
 function create_post_data(parameter){
     var response_object = {};
     if(parameter["substance_information"]){
