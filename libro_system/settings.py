@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
+import os, sys
+sys.path.append(os.path.dirname(__file__))
+import customer_settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,8 +27,7 @@ SECRET_KEY = 'k8w8jqdl4hn6wln(3yne#d#&%8_7go1e+yq4=*l(71&&j!=9m6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rezztech.cf',"127.0.0.1"]
-
+ALLOWED_HOSTS = customer_settings.ALLOWED_HOSTS + ["127.0.0.1", "localhost"]
 
 # Application definition
 

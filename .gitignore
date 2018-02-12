@@ -1,8 +1,9 @@
 *~
 Error_log
 *.swp
-API_settings.py
+books/get_books_detail/API_settings.py
 db.sqlite3
+libro_system/customer_settings.py
 
 
 # Byte-compiled / optimized / DLL files
