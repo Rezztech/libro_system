@@ -22,14 +22,14 @@ class BookIdentifier(models.Model):
 class Author(models.Model):
     name = models.CharField(max_length=453)
 
-class BookDetails(models.Model):
+class Bookdetails(models.Model):
     title = models.CharField(max_length=453)
     subtitle = models.CharField(max_length=453, blank=True)
     authors = models.ManyToManyField(Author) # [TODO] translator
     publisher = models.CharField(max_length=453, blank=True)
-    published_date = models.DateField(blank=True)
+    published_date = models.DateField(blank=True, null=True)
     identifiers = models.ManyToManyField(BookIdentifier)
-    description = models.TextField(max_length=9453, null=True)
+    description = models.TextField(max_length=9453, blank=True)
 
 #    categories = models.ManyToManyField(Category)
 
@@ -64,15 +64,15 @@ class BookDetails(models.Model):
 #                return new_book
 
 class Location(models.Model):
-    floor = models.IntegerField()
-    room = models.CharField(max_length=453)
+    floor = models.CharField(max_length=53, blank=True)
+    room = models.CharField(max_length=53, blank=True)
 
 class Possessor(models.Model):
-    name = models.CharField(max_length=453)
+    name = models.CharField(max_length=453, blank=True)
 
 class Book(models.Model):
-    detail = models.ForeignKey(BookDetails, models.PROTECT)
+    detail = models.ForeignKey(Bookdetails, models.PROTECT)
     location = models.ForeignKey(Location)
     possessor = models.ForeignKey(Possessor)
-    notas = models.TextField(max_length=9453, null=True)
+    notas = models.TextField(max_length=9453, blank=True)
 
