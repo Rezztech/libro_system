@@ -4,6 +4,7 @@ Error_log
 books/get_books_detail/API_settings.py
 db.sqlite3
 libro_system/customer_settings.py
+migrations/
 
 
 # Byte-compiled / optimized / DLL files

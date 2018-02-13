@@ -76,7 +76,7 @@ function submit_book_detail_to_store_ajax(submit_div){
                 display_status_message("Ajax request error");
             },
             success: function( response ){
-                //TEST = response;
+                TEST = response;
             },
         });
 }
