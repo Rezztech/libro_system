@@ -71,8 +71,8 @@ class Possessor(models.Model):
     name = models.CharField(max_length=453, blank=True)
 
 class Book(models.Model):
-    detail = models.ForeignKey(Bookdetails, models.PROTECT)
-    location = models.ForeignKey(Location)
-    possessor = models.ForeignKey(Possessor)
+    detail = models.ForeignKey(Bookdetails, on_delete=models.PROTECT)
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)
+    possessor = models.ForeignKey(Possessor, on_delete=models.PROTECT)
     notas = models.TextField(max_length=9453, blank=True)
 
