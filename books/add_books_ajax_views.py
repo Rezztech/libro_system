@@ -6,6 +6,7 @@ GET_BOOK_DETAIL = os.path.join(os.path.dirname(__file__), "get_books_detail")
 sys.path.append(GET_BOOK_DETAIL)
 from get_book_detail import get_book_detail
 from .utils import check_isbn_issn
+from books import sql_operation
 
 def response_receive_ajax(request):
     return JsonResponse(request.POST, safe=False)
@@ -60,5 +61,9 @@ def detail_to_store(request):
             if not check_isbn_issn( identifier["identifier"] ):
                 response_object["status"] = "invalid_identifier"
                 response_object["invalid_identifier_content"].append(identifier["identifier"])
+
+        store = sql_operation.store()
+        if response_object["status"] == "success":
+            store.store_book_detail(book_detail)
 
         return JsonResponse(response_object, safe=False)

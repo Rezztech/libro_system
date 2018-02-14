@@ -11,25 +11,37 @@ from books import utils
 #class Category(models.Model):
 #    category_name = models.CharField(max_length=453)
 
-class BookIdentifier(models.Model):
-    type = models.CharField(max_length=7, choices=(
-        ('ISBN_10', 'International Standard Book Number (10 digits)'),
-        ('ISBN_13', 'International Standard Book Number (13 digits)'),
-        ('ISSN', 'International Standard Serial Number (8 digits)')))
-
-    identifier = models.CharField(max_length=13)
-
 class Author(models.Model):
     name = models.CharField(max_length=453)
+
+    def __str__(self):
+        return self.name
 
 class Bookdetails(models.Model):
     title = models.CharField(max_length=453)
     subtitle = models.CharField(max_length=453, blank=True)
     authors = models.ManyToManyField(Author) # [TODO] translator
     publisher = models.CharField(max_length=453, blank=True)
-    published_date = models.DateField(blank=True, null=True)
-    identifiers = models.ManyToManyField(BookIdentifier)
+    #published_date = models.DateField(blank=True, null=True)
+    published_date = models.CharField(max_length=53, blank=True)
+    #identifiers = models.ManyToManyField(BookIdentifier)
+    #identifiers changed to foreignkey
     description = models.TextField(max_length=9453, blank=True)
+    
+    def __str__(self):
+        return self.title
+
+class BookIdentifier(models.Model):
+    itype = models.CharField(max_length=7, choices=(
+        ('ISBN_10', 'International Standard Book Number (10 digits)'),
+        ('ISBN_13', 'International Standard Book Number (13 digits)'),
+        ('ISSN', 'International Standard Serial Number (8 digits)')))
+
+    identifier = models.CharField(max_length=13)
+    belongbook = models.ForeignKey(Bookdetails, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.identifier
 
 #    categories = models.ManyToManyField(Category)
 
