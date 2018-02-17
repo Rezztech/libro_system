@@ -5,8 +5,8 @@ import sys, os
 GET_BOOK_DETAIL = os.path.join(os.path.dirname(__file__), "get_books_detail")
 sys.path.append(GET_BOOK_DETAIL)
 from get_book_detail import get_book_detail
-from .utils import check_isbn_issn
 from books import sql_operation
+from books import utils
 
 def response_receive_ajax(request):
     return JsonResponse(request.POST, safe=False)
@@ -14,14 +14,17 @@ def response_receive_ajax(request):
 def isbn_to_detail(request):
     if request.is_ajax():
         isbn_input = request.POST["isbn_input"]
+
         response_object = {}
 
-        if check_isbn_issn( str(isbn_input) ):
+        try:
+            check = sql_operation.check()
+            check.check_identifier_valid(str(isbn_input))
+        except IndustryIdentifierError as error_paramenter:
+            response_object["status"] = "invalid_identifier"
+        else:
             response_object = get_book_detail(isbn_input)
             response_object["status"] = "success"
-
-        else:
-            response_object["status"] = "invalid_identifier"
 
         return JsonResponse(response_object, safe=False)
 
@@ -47,23 +50,36 @@ def detail_to_store(request):
         #return JsonResponse(book_detail, safe=False)
 
         substance_information = {}
-
         substance_information["location"] = request.POST["information_location"]
         substance_information["possessor"] = request.POST["information_possessor"]
         substance_information["notas"] = request.POST["information_notas"]
 
         response_object = {}
-        response_object["status"] = "success"
-        response_object["invalid_identifier_content"] = []
-        if book_detail["title"] == "":
-            response_object["status"] = "title_empty"
-        for identifier in book_detail["identifiers"]:
-            if not check_isbn_issn( identifier["identifier"] ):
-                response_object["status"] = "invalid_identifier"
-                response_object["invalid_identifier_content"].append(identifier["identifier"])
+#        response_object["status"] = "success"
+#        response_object["invalid_identifier_content"] = []
+#        if book_detail["title"] == "":
+#            response_object["status"] = "title_empty"
+#        for identifier in book_detail["identifiers"]:
+#            if not check_isbn_issn( identifier["identifier"] ):
+#                response_object["status"] = "invalid_identifier"
+#                response_object["invalid_identifier_content"].append(identifier["identifier"])
 
-        store = sql_operation.store()
+        try:
+            check = sql_operation.check()
+            check.check_identifiers_valid(book_detail)
+        except utils.IndustryIdentifierError as error_paramenter:
+            response_object["status"] = "invalid_identifier"
+            response_object["invalid_identifier"] = error_paramenter.args[1]
+        except:
+            response_object["status"] = "Unexpected Error"
+            raise
+        else:
+            response_object["status"] = "success"
+
+
         if response_object["status"] == "success":
-            store.store_book_detail(book_detail)
-
+            store = sql_operation.store()
+            #store.store_book_detail(book_detail)
+            store.store_book(book_detail, substance_information)
+        
         return JsonResponse(response_object, safe=False)

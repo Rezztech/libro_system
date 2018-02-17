@@ -8,8 +8,9 @@ class Error(Exception):
     pass
 
 class IndustryIdentifierError(Error):
-    def __init__(self, message):
+    def __init__(self, message, identifier):
         self.message = message
+        self.error_identifier = identifier
 
 def check_isbn_issn(string):
     if (re.fullmatch(r'[0-9]{9}[0-9X]', string) or re.fullmatch(r'[0-9]{13}', string) or re.fullmatch(r'[0-9]{7}[0-9X]', string)):
@@ -21,7 +22,7 @@ def check_isbn_issn(string):
             if (n == 11 and string[-1] == '0') or (n == 10 and string[-1] == 'X') or (n != 11 and n != 10 and string[-1] == str(n)):
                 return "ISBN_10"
             else:
-                raise IndustryIdentifierError("ISBN-10 not valid")
+                raise IndustryIdentifierError("ISBN-10 not valid", string)
 
         elif len(string) == 13:
             # ISBN-13
@@ -33,7 +34,7 @@ def check_isbn_issn(string):
             if string[-1] == str(n):
                 return "ISBN_13"
             else:
-                raise IndustryIdentifierError("ISBN-13 not valid")
+                raise IndustryIdentifierError("ISBN-13 not valid", string)
 
         elif len(string) == 8:
             # ISSN
@@ -43,9 +44,9 @@ def check_isbn_issn(string):
             if (n == 11 and string[-1] == '0') or (n == 10 and string[-1] == 'X') or (n != 11 and n != 10 and string[-1] == str(n)):
                 return "ISSN"
             else:
-                raise IndustryIdentifierError("ISSN not valid")
+                raise IndustryIdentifierError("ISSN not valid", string)
     else:
-        raise IndustryIdentifierError("identifier is not fit to ISBN or ISSN")
+        raise IndustryIdentifierError("identifier is not fit to ISBN or ISSN", string)
 
 def parse_date(date_str):
     l = list(map(int, date_str.split('-')))

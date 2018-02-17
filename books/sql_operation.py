@@ -1,9 +1,11 @@
 from books import models
-
+from books import utils
+ 
 class store:
     "Store book in SQL"
 
     def store_identifier(self, industryidentifier, book_detail):
+        #utils.check_isbn_issn(industryidentifier["identifier"])
         ret = models.BookIdentifier.objects.create(itype = industryidentifier["type"], identifier = industryidentifier["identifier"], belongbook = book_detail)
         ret.save()
         return ret
@@ -27,7 +29,6 @@ class store:
     def store_book(self, book_detail, substance_information):
         pass
 
-
 class search:
     "search from SQL"
     
@@ -36,10 +37,16 @@ class search:
 
 class check:
     "check SQL contain"
+    def check_identifiers_valid(self, book_detail):
+        for identifier in book_detail["identifiers"]:
+            utils.check_isbn_issn(identifier["identifier"])
+
+    def check_identifier_valid(self, identifier):
+        utils.check_isbn_issn(identifier)
 
     def check_resemble_book(self, book_detail):
         pass
 
     def check_duplicate_identifier(self, book_detail):
         pass
-        
+
