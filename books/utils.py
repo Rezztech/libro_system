@@ -4,21 +4,24 @@ import datetime
 import re
 import operator
 
+class Error(Exception):
+    pass
+
+class IndustryIdentifierError(Error):
+    def __init__(self, message):
+        self.message = message
+
 def check_isbn_issn(string):
-    if (re.fullmatch(r'[0-9]{9}[0-9X]', string)
-            or re.fullmatch(r'[0-9]{13}', string)
-            or re.fullmatch(r'[0-9]{7}[0-9X]', string)):
+    if (re.fullmatch(r'[0-9]{9}[0-9X]', string) or re.fullmatch(r'[0-9]{13}', string) or re.fullmatch(r'[0-9]{7}[0-9X]', string)):
         if len(string) == 10:
             # ISBN-10
             weight = (10, 9, 8, 7, 6, 5, 4, 3, 2)
             s = sum(map(operator.mul, map(int, string[:-1]), weight))
             n = 11 - (s % 11)
-            if n == 10:
-                return string[-1] == 'X'
-            elif n == 11:
-                return string[-1] == '0'
+            if (n == 11 and string[-1] == '0') or (n == 10 and string[-1] == 'X') or (n != 11 and n != 10 and string[-1] == str(n)):
+                return "ISBN_10"
             else:
-                return string[-1] == str(n)
+                raise IndustryIdentifierError("ISBN-10 not valid")
 
         elif len(string) == 13:
             # ISBN-13
@@ -27,21 +30,22 @@ def check_isbn_issn(string):
             n = 10 - (s % 10)
             if n == 10:
                 n = 0
-            return string[-1] == str(n)
+            if string[-1] == str(n):
+                return "ISBN_13"
+            else:
+                raise IndustryIdentifierError("ISBN-13 not valid")
 
         elif len(string) == 8:
             # ISSN
             weight = (8, 7, 6, 5, 4, 3, 2)
             s = sum(map(operator.mul, map(int, string[:-1]), weight))
             n = 11 - (s % 11)
-            if n == 11:
-                return string[-1] == '0'
-            elif n == 10:
-                return string[-1] == 'X'
+            if (n == 11 and string[-1] == '0') or (n == 10 and string[-1] == 'X') or (n != 11 and n != 10 and string[-1] == str(n)):
+                return "ISSN"
             else:
-                return string[-1] == str(n)
+                raise IndustryIdentifierError("ISSN not valid")
     else:
-        return False
+        raise IndustryIdentifierError("identifier is not fit to ISBN or ISSN")
 
 def parse_date(date_str):
     l = list(map(int, date_str.split('-')))
