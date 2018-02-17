@@ -8,6 +8,7 @@ import re
 
 from books import utils
 
+#======================= book details field ==========================
 #class Category(models.Model):
 #    category_name = models.CharField(max_length=453)
 
@@ -43,48 +44,27 @@ class BookIdentifier(models.Model):
     def __str__(self):
         return self.identifier
 
-#    categories = models.ManyToManyField(Category)
-
-    # books_owned = models.ForeignKey('Book', models.CASCADE, one_to_many=True)
-    # [TODO] https://docs.djangoproject.com/en/dev/topics/db/queries/#following-relationships-backward
-
-#    @staticmethod
-#    def add_books(books):
-#        # add new books if not exist
-#        for book_info in books.get('items'):
-#            present_books = BookDetails.objects.filter(
-#                identifiers__identifier = book_info.get('industryIdentifiers')[0]
-#                                                   .get('identifier'))
-#            if present_books:
-#                return present_books[0]
-#            else:
-#                new_book = BookDetails(
-#                    title = book_info.get('title'),
-#                    subtitle = book_info.get('subtitle'),
-#                    published_date = utils.parse_date(book_info.get('publishedDate')),
-#                    publisher = book_info.get('publisher'),
-#                    description = book_info.get('description'))
-#                new_book.save()
-#                for d in book_info.get('industryIdentifiers'):
-#                    new_book.identifiers.add(
-#                        BookIdentifier.objects.get_or_create(type=d['type'],
-#                                                             identifier=d['identifier'])[0])
-#                for name in book_info.get('authors'):
-#                    new_book.authors.add(
-#                        Author.objects.get_or_create(name=name)[0])
-#                # [TODO] categories
-#                return new_book
-
+#=================== book physical details field ========================
 class Location(models.Model):
-    floor = models.CharField(max_length=53, blank=True)
-    room = models.CharField(max_length=53, blank=True)
+    description = models.CharField(max_length=53)
+#[TODO]
+#    floor = models.CharField(max_length=53, blank=True)
+#    room = models.CharField(max_length=53, blank=True)
+    def __str__(self):
+        return self.description
 
 class Possessor(models.Model):
-    name = models.CharField(max_length=453, blank=True)
+    name = models.CharField(max_length=53)
+
+    def __str__(self):
+        return self.name
 
 class Book(models.Model):
-    detail = models.ForeignKey(Bookdetails, on_delete=models.PROTECT)
-    location = models.ForeignKey(Location, on_delete=models.PROTECT)
-    possessor = models.ForeignKey(Possessor, on_delete=models.PROTECT)
+    detail = models.ForeignKey(Bookdetails, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.SET_DEFAULT, default=Location.objects.create(description = "unknown"))
+    possessor = models.ForeignKey(Possessor, on_delete=models.SET_DEFAULT, default=Possessor.objects.create(name = "unknown"))
     notas = models.TextField(max_length=9453, blank=True)
+
+    def __str__(self):
+        return "%s at %s belong to %s" % (self.detail, self.location, self.possessor)
 

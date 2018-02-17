@@ -55,27 +55,20 @@ def detail_to_store(request):
         substance_information["notas"] = request.POST["information_notas"]
 
         response_object = {}
-#        response_object["status"] = "success"
-#        response_object["invalid_identifier_content"] = []
-#        if book_detail["title"] == "":
-#            response_object["status"] = "title_empty"
-#        for identifier in book_detail["identifiers"]:
-#            if not check_isbn_issn( identifier["identifier"] ):
-#                response_object["status"] = "invalid_identifier"
-#                response_object["invalid_identifier_content"].append(identifier["identifier"])
-
         try:
             check = sql_operation.check()
             check.check_identifiers_valid(book_detail)
+            check.check_title_not_empty(book_detail)
         except utils.IndustryIdentifierError as error_paramenter:
             response_object["status"] = "invalid_identifier"
             response_object["invalid_identifier"] = error_paramenter.args[1]
+        except utils.BookdetailValidError as error_paramenter:
+            response_object["status"] = error_paramenter.args[0]
         except:
             response_object["status"] = "Unexpected Error"
             raise
         else:
             response_object["status"] = "success"
-
 
         if response_object["status"] == "success":
             store = sql_operation.store()

@@ -12,6 +12,10 @@ class IndustryIdentifierError(Error):
         self.message = message
         self.error_identifier = identifier
 
+class BookdetailValidError(Error):
+    def __init__(self, message):
+        self.message = message
+
 def check_isbn_issn(string):
     if (re.fullmatch(r'[0-9]{9}[0-9X]', string) or re.fullmatch(r'[0-9]{13}', string) or re.fullmatch(r'[0-9]{7}[0-9X]', string)):
         if len(string) == 10:

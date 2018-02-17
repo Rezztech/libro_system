@@ -26,8 +26,20 @@ class store:
         ret.save()
         return ret
 
+    def store_location(self, location):
+        ret = models.Location.objects.create(description = location)
+        ret.save()
+        return ret
+
+    def store_possessor(self, possessor):
+        ret = models.Possessor.objects.create(name = possessor)
+        ret.save()
+        return ret
+
     def store_book(self, book_detail, substance_information):
-        pass
+        ret = models.Book.objects.create(notas = substance_information["notas"], location = self.store_location(substance_information["location"]), possessor = self.store_possessor(substance_information["possessor"]), detail = self.store_book_detail(book_detail))
+        ret.save()
+        return ret
 
 class search:
     "search from SQL"
@@ -40,6 +52,10 @@ class check:
     def check_identifiers_valid(self, book_detail):
         for identifier in book_detail["identifiers"]:
             utils.check_isbn_issn(identifier["identifier"])
+
+    def check_title_not_empty(self, book_detail):
+        if book_detail["title"] == "":
+            raise BookdetailValidError("title_empty")
 
     def check_identifier_valid(self, identifier):
         utils.check_isbn_issn(identifier)
