@@ -18,11 +18,21 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+class Publisher(models.Model):
+    name = models.CharField(max_length=453)
+
+    def __str__(self):
+        return self.name
+
+def default_Publisher():
+    obj, is_created = Publisher.objects.get_or_create(name = "unknown")
+    return obj
+
 class Bookdetails(models.Model):
     title = models.CharField(max_length=453)
     subtitle = models.CharField(max_length=453, blank=True)
     authors = models.ManyToManyField(Author) # [TODO] translator
-    publisher = models.CharField(max_length=453, blank=True)
+    publisher = models.ForeignKey(Publisher, on_delete=models.PROTECT, default=default_Publisher)
     #published_date = models.DateField(blank=True, null=True)
     published_date = models.CharField(max_length=53, blank=True)
     #identifiers = models.ManyToManyField(BookIdentifier)

@@ -7,16 +7,22 @@ class store:
     def store_identifier(self, industryidentifier, book_detail):
         #utils.check_isbn_issn(industryidentifier["identifier"])
         ret = models.BookIdentifier.objects.create(itype = industryidentifier["type"], identifier = industryidentifier["identifier"], belongbook = book_detail)
-        ret.save()
         return ret
 
     def store_author(self, author):
-        ret = models.Author.objects.create(name = author)
-        ret.save()
-        return ret
+        author_name = ""
+        author_name = "unknown" if author == "" else author
+        obj, is_created = models.Author.objects.get_or_create(name = author_name)
+        return obj
+
+    def store_publisher(self, publisher):
+        publisher_name = ""
+        publisher_name = "unknown" if publisher == "" else publisher
+        obj, is_created = models.Publisher.objects.get_or_create(name = publisher_name)
+        return obj
 
     def store_book_detail(self, book_detail):
-        ret = models.Bookdetails.objects.create(title = book_detail["title"], subtitle = book_detail["subtitle"], publisher = book_detail["publisher"], published_date = book_detail["publisheddate"], description = book_detail["description"])
+        ret = models.Bookdetails.objects.create(title = book_detail["title"], subtitle = book_detail["subtitle"], publisher = self.store_publisher(book_detail["publisher"]), published_date = book_detail["publisheddate"], description = book_detail["description"])
         for author in book_detail["authors"]:
             ret.authors.add(self.store_author(author))
         
@@ -40,7 +46,6 @@ class store:
 
     def store_book(self, book_detail, substance_information):
         ret = models.Book.objects.create(notas = substance_information["notas"], location = self.store_location(substance_information["location"]), possessor = self.store_possessor(substance_information["possessor"]), detail = self.store_book_detail(book_detail))
-        ret.save()
         return ret
 
 class search:
