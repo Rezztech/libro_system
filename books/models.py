@@ -53,18 +53,26 @@ class Location(models.Model):
     def __str__(self):
         return self.description
 
+def default_Location():
+    obj, is_created = Location.objects.get_or_create(description = "unknown")
+    return obj
+
 class Possessor(models.Model):
     name = models.CharField(max_length=53)
 
     def __str__(self):
         return self.name
 
+def default_Possessor():
+    obj, is_created = Possessor.objects.get_or_create(name = "unknown")
+    return obj
+
 class Book(models.Model):
     detail = models.ForeignKey(Bookdetails, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.SET_DEFAULT, default=Location.objects.create(description = "unknown"))
-    possessor = models.ForeignKey(Possessor, on_delete=models.SET_DEFAULT, default=Possessor.objects.create(name = "unknown"))
+    location = models.ForeignKey(Location, on_delete=models.SET_DEFAULT, default=default_Location)
+    possessor = models.ForeignKey(Possessor, on_delete=models.SET_DEFAULT, default=default_Possessor)
     notas = models.TextField(max_length=9453, blank=True)
 
     def __str__(self):
-        return "%s at %s belong to %s" % (self.detail, self.location, self.possessor)
+        return '"%s" at "%s" belong to "%s"' % (self.detail, self.location, self.possessor)
 

@@ -27,14 +27,16 @@ class store:
         return ret
 
     def store_location(self, location):
-        ret = models.Location.objects.create(description = location)
-        ret.save()
-        return ret
+        location_description = ""
+        location_description = "unknown" if location == "" else location
+        obj, is_created = models.Location.objects.get_or_create(description = location_description)
+        return obj
 
     def store_possessor(self, possessor):
-        ret = models.Possessor.objects.create(name = possessor)
-        ret.save()
-        return ret
+        possessor_name = ""
+        possessor_name = "unknown" if possessor == "" else possessor
+        obj, is_created = models.Possessor.objects.get_or_create(name = possessor_name)
+        return obj
 
     def store_book(self, book_detail, substance_information):
         ret = models.Book.objects.create(notas = substance_information["notas"], location = self.store_location(substance_information["location"]), possessor = self.store_possessor(substance_information["possessor"]), detail = self.store_book_detail(book_detail))
